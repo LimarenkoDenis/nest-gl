@@ -1,8 +1,10 @@
 import { UpdateUserDto } from './../dto/update.user.dto';
-import { Controller, Post, Get, Delete, Param, Body, HttpStatus, Res, Query, Put } from '@nestjs/common';
+import { Controller, Post, Get, Delete, Param, Body, HttpStatus, Res, Query, Put, UsePipes } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create.user.dto';
 import { UsersService } from '../services/users.service';
 import { ApiUseTags, ApiOperation, ApiResponse, ApiImplicitQuery } from '@nestjs/swagger';
+import { SanitizePipe } from '../../pipes/sanitize.pipe';
+import { ValidationPipe } from '../../pipes/validation.pipe';
 
 @ApiUseTags('users')
 @Controller('users')
@@ -29,6 +31,7 @@ export class UsersController {
   @ApiOperation({ title: 'Create new user' })
   @ApiResponse({ status: HttpStatus.OK, description: 'return new created user' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad request' })
+  @UsePipes(ValidationPipe, SanitizePipe)
   public async create(
     @Body() command: CreateUserDto,
   ) {
@@ -46,6 +49,7 @@ export class UsersController {
   @Put(':id')
   @ApiOperation({ title: 'Update user' })
   @ApiResponse({ status: HttpStatus.OK, description: 'return updated user' })
+  @UsePipes(ValidationPipe, SanitizePipe)
   public async updateOne(
     @Param('id') id: number,
     @Body() command: UpdateUserDto,
