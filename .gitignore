@@ -1,0 +1,16 @@
+.idea
+.vscode
+dist
+node_modules
+.data
+npm-debug.log
+ecosystem.config.yaml
+deploy/config/deploy/*.rb
+config/*.json
+.vscode
+dump/.DS_Store
+.DS_Store
+docs/**/*.html
+build-params.xml
+package-lock.json
+ormconfig.json
