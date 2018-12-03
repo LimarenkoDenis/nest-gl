@@ -9,6 +9,7 @@ async function bootstrap() {
 
   const options = new DocumentBuilder()
     .setBasePath('api/v1')
+    .addBearerAuth()
     .setTitle('My awsome app example')
     .setDescription('My awsome app API description')
     .setVersion('1.0')

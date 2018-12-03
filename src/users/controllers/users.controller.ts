@@ -1,10 +1,11 @@
 import { UpdateUserDto } from './../dto/update.user.dto';
-import { Controller, Post, Get, Delete, Param, Body, HttpStatus, Res, Query, Put, UsePipes } from '@nestjs/common';
+import { Controller, Post, Get, Delete, Param, Body, HttpStatus, Res, Query, Put, UsePipes, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create.user.dto';
 import { UsersService } from '../services/users.service';
-import { ApiUseTags, ApiOperation, ApiResponse, ApiImplicitQuery } from '@nestjs/swagger';
+import { ApiUseTags, ApiOperation, ApiResponse, ApiImplicitQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { SanitizePipe } from '../../pipes/sanitize.pipe';
 import { ValidationPipe } from '../../pipes/validation.pipe';
+import { AuthGuard } from './../../guards/auth.guard';
 
 @ApiUseTags('users')
 @Controller('users')
@@ -31,6 +32,8 @@ export class UsersController {
   @ApiOperation({ title: 'Create new user' })
   @ApiResponse({ status: HttpStatus.OK, description: 'return new created user' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad request' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @UsePipes(ValidationPipe, SanitizePipe)
   public async create(
     @Body() command: CreateUserDto,
@@ -49,6 +52,8 @@ export class UsersController {
   @Put(':id')
   @ApiOperation({ title: 'Update user' })
   @ApiResponse({ status: HttpStatus.OK, description: 'return updated user' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @UsePipes(ValidationPipe, SanitizePipe)
   public async updateOne(
     @Param('id') id: number,
@@ -60,6 +65,8 @@ export class UsersController {
   @Delete(':id')
   @ApiOperation({ title: 'Delete user' })
   @ApiResponse({ status: HttpStatus.OK, description: 'return ok' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   public async deleteOne(@Param('id') id: number) {
     return await this._usersService.deleteOne(id);
   }
