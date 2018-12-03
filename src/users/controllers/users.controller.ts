@@ -1,9 +1,7 @@
-import { User } from '../entities/user.entity';
-import { UpdateUserDto } from '../dto/update.user.dto';
+import { UpdateUserDto } from './../dto/update.user.dto';
 import { Controller, Post, Get, Delete, Param, Body, HttpStatus, Res, Query, Put } from '@nestjs/common';
 import { CreateUserDto } from '../dto/create.user.dto';
 import { UsersService } from '../services/users.service';
-import { Response } from 'express';
 import { ApiUseTags, ApiOperation, ApiResponse, ApiImplicitQuery } from '@nestjs/swagger';
 
 @ApiUseTags('users')
@@ -14,72 +12,51 @@ export class UsersController {
   ) { }
 
   @Get()
-  @ApiOperation({ title: 'Get list of users'})
+  @ApiOperation({ title: 'Get list of users' })
   @ApiResponse({ status: HttpStatus.OK, description: 'return list of users' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad request' })
-  @ApiImplicitQuery({ name: 'order', enum: ['abc', 'cba'] }  )
-  @ApiImplicitQuery({ name: 'page' }  )
-  @ApiImplicitQuery({ name: 'limit' }  )
-  @ApiImplicitQuery({ name: 'sort' }  )
+  @ApiImplicitQuery({ name: 'order', enum: ['abc', 'cba'] })
+  @ApiImplicitQuery({ name: 'page' })
+  @ApiImplicitQuery({ name: 'limit' })
+  @ApiImplicitQuery({ name: 'sort' })
   public async findAll(
-    @Res() res: Response,
     @Query() queryParams: { page: number, limit: number, order: string, sort: string },
   ) {
-    try {
-      const users: User[] = await this._usersService.findAll(queryParams);
-      return res.status(HttpStatus.OK).json({ data: users, error: null });
-    } catch (error) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ data: null, error });
-    }
+    return await this._usersService.findAll(queryParams);
   }
 
   @Post()
-  @ApiOperation({ title: 'Create new user'})
+  @ApiOperation({ title: 'Create new user' })
   @ApiResponse({ status: HttpStatus.OK, description: 'return new created user' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad request' })
-  public async create(@Res() res: Response, @Body() command: CreateUserDto) {
-    try {
-      const newUser: User = await this._usersService.create(command);
-      return res.status(HttpStatus.OK).json({ data: newUser, error: null });
-    } catch (error) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ data: null, error });
-    }
+  public async create(
+    @Body() command: CreateUserDto,
+  ) {
+    return await this._usersService.create(command);
   }
 
   @Get(':id')
-  @ApiOperation({ title: 'Find user'})
+  @ApiOperation({ title: 'Find user' })
   @ApiResponse({ status: HttpStatus.OK, description: 'return user' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Bad request' })
-  public async findOne(@Res() res: Response, @Param('id') id: number) {
-    try {
-      const user: User = await this._usersService.findOne(id);
-      return res.status(HttpStatus.OK).json({ data: user, error: null });
-    } catch (error) {
-      return res.status(HttpStatus.UNAUTHORIZED).json({ data: null, error });
-    }
+  public async findOne(@Param('id') id: number) {
+    return await this._usersService.findOne(id);
   }
 
   @Put(':id')
-  @ApiOperation({ title: 'Update user'})
+  @ApiOperation({ title: 'Update user' })
   @ApiResponse({ status: HttpStatus.OK, description: 'return updated user' })
-  public async updateOne(@Res() res: Response, @Param('id') id: number, @Body() command: UpdateUserDto) {
-    try {
-      const newUser: User = await this._usersService.updateOne(id, command);
-      return res.status(HttpStatus.OK).json({ data: newUser, error: null });
-    } catch (error) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ data: null, error });
-    }
+  public async updateOne(
+    @Param('id') id: number,
+    @Body() command: UpdateUserDto,
+  ) {
+    return await this._usersService.updateOne(id, command);
   }
 
   @Delete(':id')
-  @ApiOperation({ title: 'Delete user'})
+  @ApiOperation({ title: 'Delete user' })
   @ApiResponse({ status: HttpStatus.OK, description: 'return ok' })
-  public async deleteOne(@Res() res: Response, @Param('id') id: number) {
-    try {
-      await this._usersService.deleteOne(id);
-      return res.status(HttpStatus.OK).json({ data: 'Ok', error: null });
-    } catch (error) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ data: null, error });
-    }
+  public async deleteOne(@Param('id') id: number) {
+    return await this._usersService.deleteOne(id);
   }
 }
