@@ -1,3 +1,12 @@
+# NestJs or Angular on backend
+## simple demo
+<a href="https://www.facebook.com/events/341289703332783/" target="blank">GlobalLogic Kharkiv JS TechTalk #3</a>
+<br>
+<a href="http://slides.com/denyslymarenko/deck-3#/" target="blank">Slides</a>
+
+## navigate by steps `git checkout step-[step-number]` (`git checkout step-1`... `step-2`)
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
